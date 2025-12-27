@@ -142,3 +142,31 @@ UPDATE sales_data_cleaned
 SET region = 'North'
 WHERE region = 'nrth';
 
+--> Customer Base per Region Analysis <--
+
+SELECT
+    region,
+    COUNT(customer_id) AS customer_count
+FROM
+    customer_info_cleaned
+GROUP BY region
+
+--> Average Order Value (AOV) per Region Analysis <--
+
+--> Gives average order value per region for the customer in the region where the customer belongs 
+SELECT
+    ci.region,
+    ROUND(AVG(sd.total_sales_amount), 2) AS average_order_value
+FROM
+    sales_data_cleaned sd
+    JOIN customer_info_cleaned ci ON sd.customer_id = ci.customer_id
+GROUP BY ci.region
+ORDER BY average_order_value DESC;
+
+--> Gives AOV for the sale made in the region where the sale was made
+SELECT
+    region,
+    ROUND(AVG(total_sales_amount), 2) AS average_order_value
+FROM sales_data_cleaned
+GROUP BY region
+ORDER BY average_order_value DESC;
